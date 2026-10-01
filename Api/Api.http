@@ -1,0 +1,45 @@
+@Api_HostAddress = http://localhost:5046
+# Substitua pelo id retornado no POST.
+@taskId = 00000000-0000-0000-0000-000000000000
+
+### Criar — 201; copie id e confira code na resposta
+POST {{Api_HostAddress}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Preparar apresentação",
+  "description": "Revisar slides",
+  "dueDate": "2026-10-10",
+  "status": "Pending"
+}
+
+### Listar — 200
+GET {{Api_HostAddress}}/api/tasks
+
+### Buscar e filtrar por status e vencimento máximo — 200
+GET {{Api_HostAddress}}/api/tasks?search=slides&status=Pending&dueDate=2026-10-10
+
+### Consultar pelo GUID — 200 ou 404
+GET {{Api_HostAddress}}/api/tasks/{{taskId}}
+
+### Atualizar — 200; id, code e createdAt são preservados
+PUT {{Api_HostAddress}}/api/tasks/{{taskId}}
+Content-Type: application/json
+
+{
+  "title": "Apresentação revisada",
+  "description": null,
+  "dueDate": "2026-10-10",
+  "status": "Completed"
+}
+
+### Excluir — 204
+DELETE {{Api_HostAddress}}/api/tasks/{{taskId}}
+
+### Validar título obrigatório — 400
+POST {{Api_HostAddress}}/api/tasks
+Content-Type: application/json
+
+{
+  "title": "   "
+}
